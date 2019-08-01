@@ -11,7 +11,3 @@ describe Card do
   end
 end
 
-
-
-
-(card)
