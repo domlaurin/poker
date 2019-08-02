@@ -1,25 +1,3 @@
-write methods to check for each type of hand
-rank royal_flush as 1
-straight 2
-four of a kind 3
-full_house
-
-
-Royal flush	
-Straight flush 
-Four of a kind
-Full house
-Flush 
-Straight
-Three of a kind
-Two pair
-One pair
-High card
- 
-10 including high 
-
-
-
 class Hand(card1, card2, card3, card4, card5)
 
     def initialize
@@ -31,44 +9,61 @@ class Hand(card1, card2, card3, card4, card5)
         @five_cards = [card1, card2, card3, card4, card5]
         @pair_hash = Hash.new(0)
         @five_cards.each { |card| @pair_hash[card.value] += 1 }
-        
     end
 
-    [2,3,4,5,6,7,8,9,10,:J,:Q,:K,:A]
-    # [:A,2,3,4,5,6,7,8,9,10,:J,:Q,:K]
-
-    def high_card?
-
+    def royal_flush?
+      self.flush? && self.straight? && @pair_hash.values.include?(A) && @pair_hash.values.include?(K)
     end
 
-    def jumble_sort(arr)
-        alphabet = [2,3,4,5,6,7,8,9,10,:J,:Q,:K,:A]
-        sorted = []
-        alphabet.each do |ch1|
-          arr.each do |ch2|
-            if ch1 == ch2
-                sorted << ch2
-            end
-          end
-        end
-        sorted
+    def straight_flush?
+      self.straight && self.flush? && !self.royal_flush?
+    end
+
+    def four_of_a_kind?
+      @pair_hash.has_value?(4)
+    end
+
+    def full_house?
+      @pair_hash.values.include?(3) && @pair_hash.values.include?(2)
+    end
+
+    def flush?
+      suit = @five_cards[0].suit
+      @five_cards.all?{ |card| card.suit == suit }
+    end
+
+
+    def straight?
+      if @pair_hash.length != 5
+        false
       end
-
-    def one_pair?
-      @pair_hash.has_value?(2)
-    end
-
-    def two_pair
-      @pair_hash.values.select {|value| value == 2}.length == 2
+      if @pair_hash.values.sort == [2, 3, 4, 5, 14]
+        true
+      end
+      @pair_hash.values.sort.each_with_index do |card, i|
+        if @five_cards[i].value + 1 == @five_cards[i+1].value
+          next
+        else
+          false
+        end
+      end
+      true
+      end
     end
 
     def three_of_a_kind?
       @pair_hash.has_value?(3)
     end
-        
-    def four_of_a_kind?
-      @pair_hash.has_value?(4)
+      
+    def two_pair?
+      @pair_hash.values.select {|value| value == 2}.length == 2
     end
-        
 
-end
+    def one_pair?
+      @pair_hash.has_value?(2)
+    end
+
+    def high_card?
+      true
+    end
+
