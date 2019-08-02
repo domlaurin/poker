@@ -9,8 +9,11 @@ class Player
     end
 
     def discard?
-        puts ''
-        gets
+        puts 'write nums separated by commas with no spaces'
+        indeces = gets.chomp #"1,2,3" "1"
+        indeces_array = indeces.split(",")
+        'some code here that discards stuff'
+        return indeces_array.sort #[1,2,3]
     end
 
     def decision?
