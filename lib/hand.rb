@@ -1,3 +1,5 @@
+require_relative 'card.rb'
+
 class Hand(card1, card2, card3, card4, card5)
 
     def initialize
